@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: invoice
+  minReadySeconds: 30
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        deployment: invoice
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+        - name: invoice
+          image: plainid1/invicesdemo:0.1
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "2Gi"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+              protocol: "TCP"
+          volumeMounts:
+            - mountPath: /app/application.properties
+              name: inv-conf
+              subPath: application.properties
+      volumes:
+        - name: inv-conf
+          configMap:
+            name: inv-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice
+spec:
+  type: ClusterIP
+  # label keys and values that must match in order to receive traffic for this service
+  selector:
+    deployment: invoice
+  ports:
+    # ports that this service should serve on
+    - name: http
+      port: 8082
+      targetPort: 8082
+
