@@ -22,9 +22,6 @@ public class Invoices {
         @Setter
         @Getter
         private Long InvoiceId;
-
-
-
     }
 
     // Getters and Setters

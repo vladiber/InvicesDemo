@@ -24,15 +24,7 @@ public class InvoiceController {
     @GetMapping
     public List<Invoice> getAllInvoices(@PathVariable String customer) {
 
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth instanceof BearerTokenAuthentication){
-//            OAuth2AccessToken token = ((BearerTokenAuthentication) auth).getToken();
-//            EntityAttributes entityAttributes = new EntityAttributes();
-//            entityAttributes.addAttribute("ATTRIBUTE_NAME", "ATTRIBUTE_VALUE");
-//            com.plainid.libs.sqlpdplib.Context.setEntityAttributes(entityAttributes);
-//            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-//            System.out.println("");
-//        }
+
         return invoiceRepository.findAll();
     }
 

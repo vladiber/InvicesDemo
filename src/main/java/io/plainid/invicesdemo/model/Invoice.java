@@ -41,13 +41,4 @@ public class Invoice {
     @Setter
     @Getter
     private PaymentMode paymentMode;
-
-//    @ManyToOne
-//    @JsonIgnore
-//    @JoinColumn(name = "account_id")
-//    @Setter
-//    @Getter
-//    private Account account;
-
-
 }
