@@ -1,0 +1,75 @@
+server:
+  port: 8082
+
+# Database Properties
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          introspection-uri: https://demo.plainid.cloud/auth/realms/demo/protocol/openid-connect/token/introspect
+#          client-id: spring
+#          client-secret: xlN2CykPxym4IVeWXSeENs8k6sf321KR
+          issuer-uri:  https://login.microsoftonline.com/4f825dfe-b167-43fb-bf88-3aa9421eb127/v2.0
+
+  datasource:
+    url: jdbc:postgresql://localhost/test?sslmode=disable
+    username: postgres
+    password: postgres
+#    url: jdbc:sqlserver://localhost:1433;databaseName=testdb;encrypt=false
+#    username: sa
+#    password: P@ssw0rd
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  # Hibernate Properties
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+       # dialect: org.hibernate.dialect.SQLServer2012Dialect
+        connection_handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+        generate_statistics: false
+        format_sql: true
+#        session_factory:
+#          statement_inspector: com.plainid.libs.sqlpdplib.SQLInterceptor
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+  jackson:
+    default-property-inclusion: NON_NULL
+
+
+plainid:
+  sqlpdp:
+    pdpUrl: http://localhost:8087/resql
+    clientID: PZWLHTZ4SP1QAJECAICW
+    clientSecret: oVaAwsSTFMG91RmPKAQqHxwPMU0nyTpBLXotumtg
+    entityTypeId: "Main"
+    emptyCLSTreatAsPermitted: false
+    ignoreRuntimeCLSResponse: false
+    ignoreSqlPdpServiceErrors: true
+    oppositeColumnFilteringBehavior: true
+    expandStarColumn: false
+    policiesJoinOperation: OR
+    runtimeCLSAsMasked: true
+    enabled: false
+    jwtPassthrough: true
+    entityIdJwtMapping: typ
+    beansconfig: true
+    requestMapping: | 
+      {
+        "env.MY_ENV_VAR": "entityAttributes.myEnvVar",
+        "headers.x-user-info.$.user.department": "contextData.userInfo",
+        "headers.Accept-Encoding": "entityAttributes.Accept-Encoding-Target",
+        "qs.difficulty": "environment.difficulty",
+        "url./api/([^/]+)(/|$)": "environment.urlPartExample",
+        "env.APP_NAME" : "environment.app"
+      }
+
+
+logging:
+  level:
+    com.plainid.libs: TRACE

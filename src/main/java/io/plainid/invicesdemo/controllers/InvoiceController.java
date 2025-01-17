@@ -23,8 +23,6 @@ public class InvoiceController {
 
     @GetMapping
     public List<Invoice> getAllInvoices(@PathVariable String customer) {
-
-
         return invoiceRepository.findAll();
     }
 
